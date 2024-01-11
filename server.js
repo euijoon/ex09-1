@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ObjectId } = require('mongodb')
+require('dotenv').config();
 
 let db
-const url = 'mongodb+srv://eui:mQAudYjjXn2wMqP9@forum.9n9hsli.mongodb.net/?retryWrites=true&w=majority'
+const url = process.env.mongodb_URL;
 new MongoClient(url).connect().then((client)=>{
   console.log('DB연결성공')
   db = client.db('forum')
