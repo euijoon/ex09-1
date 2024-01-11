@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ObjectId } = require('mongodb')
+
+app.use(express.json()); 
+app.use(express.urlencoded({extended:true}));
 require('dotenv').config();
 
 let db
@@ -27,4 +30,13 @@ app.get("/list", async (req, res) => {
     let result = await db.collection('post').find().toArray();
     console.log(result);
     res.render('list.ejs', { result });
+})
+
+app.get('/write', (req, res) => {
+    res.render('write.ejs');
+})
+
+app.post('/post_add', async (req, res) => {
+    await db.collection('post').insertOne({ title: req.body.title, content: req.body.content });
+    res.redirect('/list');
 })
