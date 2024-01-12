@@ -40,3 +40,8 @@ app.post('/post_add', async (req, res) => {
     await db.collection('post').insertOne({ title: req.body.title, content: req.body.content });
     res.redirect('/list');
 })
+
+app.get("/detail/:id", async (req, res) => {
+    let result = await db.collection('post').findOne({ _id: new ObjectId(req.params.id)});
+    res.render('detail.ejs', { result });
+})
