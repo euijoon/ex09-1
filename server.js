@@ -45,3 +45,8 @@ app.get("/detail/:id", async (req, res) => {
     let result = await db.collection('post').findOne({ _id: new ObjectId(req.params.id)});
     res.render('detail.ejs', { result });
 })
+
+app.get('/edit/:id', async (req, res) => {
+    let result = await db.collection('post').findOne({ _id: new ObjectId(req.params.id)});
+    res.render('detail.ejs', { result });
+})
