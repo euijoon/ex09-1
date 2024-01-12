@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const { MongoClient, ObjectId } = require('mongodb')
+const methodOverride = require('method-override')
 
+
+app.use(methodOverride('_method'));
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true}));
 require('dotenv').config();
@@ -28,7 +31,6 @@ app.get("/", (req, res) => {
 
 app.get("/list", async (req, res) => {
     let result = await db.collection('post').find().toArray();
-    console.log(result);
     res.render('list.ejs', { result });
 })
 
@@ -48,5 +50,9 @@ app.get("/detail/:id", async (req, res) => {
 
 app.get('/edit/:id', async (req, res) => {
     let result = await db.collection('post').findOne({ _id: new ObjectId(req.params.id)});
-    res.render('detail.ejs', { result });
+    res.render('edit.ejs', { result });
+})
+app.put('/post_edit', async(req, res) => {
+    await db.collection('post').updateOne({ _id: new ObjectId(req.body.id)}, {$set: {title: req.body.title, content: req.body.content}});
+    res.redirect("/list");
 })
