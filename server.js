@@ -56,3 +56,7 @@ app.put('/post_edit', async(req, res) => {
     await db.collection('post').updateOne({ _id: new ObjectId(req.body.id)}, {$set: {title: req.body.title, content: req.body.content}});
     res.redirect("/list");
 })
+app.get('/delete/:id', async(req, res) => {
+    await db.collection('post').deleteOne({ _id: new ObjectId(req.params.id)});
+    res.redirect('/list');
+})
